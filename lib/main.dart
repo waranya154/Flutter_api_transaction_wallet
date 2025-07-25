@@ -16,8 +16,8 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Form Validate App',
 
-      // กำหนด initial route
-      initialRoute: AppRoutes.LOGIN,
+      // กำหนด initial route เป็น Splash Screen
+      initialRoute: AppRoutes.SPLASH,
 
       // กำหนด pages และ routes
       getPages: AppPages.routes,

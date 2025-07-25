@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'app_routes.dart';
 
+import '../screens/splash_screen.dart';
 import '../screens/login.dart';
 import '../screens/regis.dart';
 import '../screens/forget_pass.dart';
@@ -9,6 +10,14 @@ class AppPages {
   AppPages._();
 
   static final routes = [
+    // Splash Screen
+    GetPage(
+      name: AppRoutes.SPLASH,
+      page: () => const SplashScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+
     // Login Page
     GetPage(
       name: AppRoutes.LOGIN,

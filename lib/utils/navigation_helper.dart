@@ -36,6 +36,15 @@ class NavigationHelper {
 
   // Methods เฉพาะสำหรับแอปนี้
 
+  /// ไปหน้า Splash Screen
+  static Future<void> toSplash({bool clearStack = false}) async {
+    if (clearStack) {
+      await offAllNamed(AppRoutes.SPLASH);
+    } else {
+      await toNamed(AppRoutes.SPLASH);
+    }
+  }
+
   /// ไปหน้า Login
   static Future<void> toLogin({bool clearStack = false}) async {
     if (clearStack) {
