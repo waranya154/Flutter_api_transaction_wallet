@@ -178,7 +178,7 @@ class _SplashScreenState extends State<SplashScreen>
                             child: Column(
                               children: [
                                 Text(
-                                  'Form Validate App',
+                                  'Template App',
                                   style: TextStyle(
                                     fontSize: 28,
                                     fontWeight: FontWeight.bold,
