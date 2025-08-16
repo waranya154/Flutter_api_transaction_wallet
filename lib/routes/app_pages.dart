@@ -12,7 +12,7 @@ class AppPages {
   static final routes = [
     // Splash Screen
     GetPage(
-      name: AppRoutes.SPLASH,
+      name: AppRoutes.splash,
       page: () => const SplashScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
@@ -20,7 +20,7 @@ class AppPages {
 
     // Login Page
     GetPage(
-      name: AppRoutes.LOGIN,
+      name: AppRoutes.login,
       page: () => const LoginScreen(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 300),
@@ -28,7 +28,7 @@ class AppPages {
 
     // Register Page
     GetPage(
-      name: AppRoutes.REGISTER,
+      name: AppRoutes.register,
       page: () => const RegisterScreen(),
       transition: Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 300),
@@ -36,7 +36,7 @@ class AppPages {
 
     // Forget Password Page
     GetPage(
-      name: AppRoutes.FORGET_PASSWORD,
+      name: AppRoutes.forgetPassword,
       page: () => const ForgetPasswordScreen(),
       transition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),

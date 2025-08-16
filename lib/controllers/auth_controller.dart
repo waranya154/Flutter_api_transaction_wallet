@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../utils/navigation_helper.dart';
 
@@ -30,7 +31,7 @@ class AuthController extends GetxController {
       //   NavigationHelper.toHome(clearStack: true);
       // }
     } catch (e) {
-      print('Error checking login status: $e');
+      debugPrint('Error checking login status: $e');
     }
   }
 

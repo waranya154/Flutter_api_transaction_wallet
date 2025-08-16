@@ -39,37 +39,37 @@ class NavigationHelper {
   /// ไปหน้า Splash Screen
   static Future<void> toSplash({bool clearStack = false}) async {
     if (clearStack) {
-      await offAllNamed(AppRoutes.SPLASH);
+      await offAllNamed(AppRoutes.splash);
     } else {
-      await toNamed(AppRoutes.SPLASH);
+      await toNamed(AppRoutes.splash);
     }
   }
 
   /// ไปหน้า Login
   static Future<void> toLogin({bool clearStack = false}) async {
     if (clearStack) {
-      await offAllNamed(AppRoutes.LOGIN);
+      await offAllNamed(AppRoutes.login);
     } else {
-      await toNamed(AppRoutes.LOGIN);
+      await toNamed(AppRoutes.login);
     }
   }
 
   /// ไปหน้า Register
   static Future<void> toRegister() async {
-    await toNamed(AppRoutes.REGISTER);
+    await toNamed(AppRoutes.register);
   }
 
   /// ไปหน้า Forget Password
   static Future<void> toForgetPassword() async {
-    await toNamed(AppRoutes.FORGET_PASSWORD);
+    await toNamed(AppRoutes.forgetPassword);
   }
 
   /// ไปหน้า Home (สำหรับอนาคต)
   static Future<void> toHome({bool clearStack = true}) async {
     if (clearStack) {
-      await offAllNamed(AppRoutes.HOME);
+      await offAllNamed(AppRoutes.home);
     } else {
-      await toNamed(AppRoutes.HOME);
+      await toNamed(AppRoutes.home);
     }
   }
 

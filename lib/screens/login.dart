@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:form_validate/controllers/auth_controller.dart';
+import 'package:get/get.dart';
 import '../utils/navigation_helper.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,24 +35,24 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      // จำลองการเรียก API
-      await Future.delayed(const Duration(seconds: 2));
+      AuthController authController = Get.put(AuthController());
+      bool loginSuccess = await authController.login(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
 
-      // แสดงผลสำเร็จ
-      NavigationHelper.showSuccessSnackBar('เข้าสู่ระบบสำเร็จ');
-
-      // นำทางไปหน้า Home (ถ้ามี) หรือแสดงข้อความ
-      // NavigationHelper.toHome();
+      if (loginSuccess) {
+        // นำทางไปหน้า Home
+        NavigationHelper.toHome(clearStack: true);
+      }
     } catch (e) {
       NavigationHelper.showErrorSnackBar(
-        'เข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่อีกครั้ง',
+        'เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง',
       );
     } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -111,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                    labelText: 'อีเมล',
+                    labelText: 'ชื่อผู้ใช้',
                     prefixIcon: Icon(Icons.email_outlined),
                     isDense: true,
                   ),

@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
       title: 'Form Validate App',
 
       // กำหนด initial route เป็น Splash Screen
-      initialRoute: AppRoutes.SPLASH,
+      initialRoute: AppRoutes.splash,
 
       // กำหนด pages และ routes
       getPages: AppPages.routes,

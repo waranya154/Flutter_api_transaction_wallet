@@ -185,7 +185,7 @@ class _SplashScreenState extends State<SplashScreen>
                                     color: Colors.white,
                                     shadows: [
                                       Shadow(
-                                        color: Colors.black.withOpacity(0.3),
+                                        color: Colors.black.withValues(alpha: 0.3),
                                         offset: const Offset(0, 2),
                                         blurRadius: 4,
                                       ),
@@ -197,7 +197,7 @@ class _SplashScreenState extends State<SplashScreen>
                                   'Secure • Simple • Smart',
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: Colors.white.withOpacity(0.9),
+                                    color: Colors.white.withValues(alpha: 0.9),
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
@@ -224,7 +224,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 child: CircularProgressIndicator(
                                   strokeWidth: 3,
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white.withOpacity(0.8),
+                                    Colors.white.withValues(alpha: 0.8),
                                   ),
                                 ),
                               ),
@@ -233,7 +233,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 'กำลังเตรียมแอปพลิเคชัน...',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.white.withOpacity(0.8),
+                                  color: Colors.white.withValues(alpha: 0.8),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -260,7 +260,7 @@ class _SplashScreenState extends State<SplashScreen>
                             'เวอร์ชัน 1.0.0',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.white.withOpacity(0.7),
+                              color: Colors.white.withValues(alpha: 0.7),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -268,7 +268,7 @@ class _SplashScreenState extends State<SplashScreen>
                             '© 2024 Form Validate App',
                             style: TextStyle(
                               fontSize: 10,
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.white.withValues(alpha: 0.6),
                             ),
                           ),
                         ],
