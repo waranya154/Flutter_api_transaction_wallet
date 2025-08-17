@@ -52,13 +52,22 @@ class AuthController extends GetxController {
       var response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'email': email, 'password': password}),
+        body: jsonEncode({'name': email, 'password': password}),
       );
-      debugPrint(
-        'data : ${jsonEncode({'email': email, 'password': password})}',
-      );
-      debugPrint('Response status: ${response.statusCode}');
-      debugPrint('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        // login สำเร็จ
+        final data = jsonDecode(response.body);
+        // final token = data['data']['assess'];
+
+        debugPrint("Token: $data");
+        _setLoggedIn(true);
+        return true;
+      } else {
+        // login ไม่สำเร็จ
+        NavigationHelper.showErrorSnackBar('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+        return false;
+      }
 
       // ตรวจสอบข้อมูล (จำลอง)
       // if (email == 'test@test.com' && password == '123456') {
