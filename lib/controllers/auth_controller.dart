@@ -58,9 +58,8 @@ class AuthController extends GetxController {
       if (response.statusCode == 200) {
         // login สำเร็จ
         final data = jsonDecode(response.body);
-        // final token = data['data']['assess'];
+        final token = data['data']['access'];
 
-        debugPrint("Token: $data");
         _setLoggedIn(true);
         return true;
       } else {
@@ -94,7 +93,6 @@ class AuthController extends GetxController {
       //   NavigationHelper.showErrorSnackBar('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
       //   return false;
       // }
-      return true;
     } catch (e) {
       NavigationHelper.showErrorSnackBar('เกิดข้อผิดพลาด: ${e.toString()}');
       return false;
