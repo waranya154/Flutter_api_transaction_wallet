@@ -67,32 +67,6 @@ class AuthController extends GetxController {
         NavigationHelper.showErrorSnackBar('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
         return false;
       }
-
-      // ตรวจสอบข้อมูล (จำลอง)
-      // if (email == 'test@test.com' && password == '123456') {
-      //   final user = User(
-      //     id: '1',
-      //     email: email,
-      //     firstName: 'Test',
-      //     lastName: 'User',
-      //   );
-
-      //   _setCurrentUser(user);
-      //   _setLoggedIn(true);
-
-      //   // บันทึก token (จำลอง)
-      //   // await _storageService.saveToken('fake_token_123');
-
-      //   NavigationHelper.showSuccessSnackBar('เข้าสู่ระบบสำเร็จ');
-
-      //   // นำทางไปหน้า Home
-      //   // NavigationHelper.toHome(clearStack: true);
-
-      //   return true;
-      // } else {
-      //   NavigationHelper.showErrorSnackBar('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
-      //   return false;
-      // }
     } catch (e) {
       NavigationHelper.showErrorSnackBar('เกิดข้อผิดพลาด: ${e.toString()}');
       return false;
