@@ -103,19 +103,30 @@ class AuthController extends GetxController {
       // จำลองการเรียก API
       await Future.delayed(const Duration(seconds: 2));
 
-      // ตรวจสอบว่าอีเมลซ้ำหรือไม่ (จำลอง)
-      if (email == 'existing@test.com') {
-        NavigationHelper.showErrorSnackBar('อีเมลนี้ถูกใช้งานแล้ว');
+      final serviceUrl = '$BASE_URL$REGISTER_ENDPOINT';
+      var url = Uri.parse(serviceUrl);
+      var response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'name': email, 'password': password}),
+      );
+
+      if (response.statusCode == 201) {
+        // แสดงผลสำเร็จ
+        NavigationHelper.showSuccessSnackBar('สมัครสมาชิกสำเร็จ');
+        // กลับไปหน้า Login
+        await Future.delayed(const Duration(milliseconds: 1500));
+        NavigationHelper.offNamed('/login');
+
+        return true;
+      } else {
+        NavigationHelper.showErrorSnackBar(
+          'สมัครสมาชิกไม่สำเร็จ: ${response.reasonPhrase}',
+        );
+
+        _setLoading(false);
         return false;
       }
-
-      NavigationHelper.showSuccessSnackBar('สมัครสมาชิกสำเร็จ');
-
-      // กลับไปหน้า Login
-      await Future.delayed(const Duration(milliseconds: 1500));
-      NavigationHelper.offNamed('/login');
-
-      return true;
     } catch (e) {
       NavigationHelper.showErrorSnackBar('เกิดข้อผิดพลาด: ${e.toString()}');
       return false;
