@@ -4,6 +4,7 @@ import 'package:form_validate/utils/api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../utils/navigation_helper.dart';
+import '../services/storage_service.dart';
 
 // AuthController สำหรับจัดการ state ของการ authentication
 class AuthController extends GetxController {
@@ -11,6 +12,8 @@ class AuthController extends GetxController {
   final _isLoggedIn = false.obs;
   final _isLoading = false.obs;
   final _currentUser = Rxn<User>();
+
+  final StorageService _storageService = StorageService();
 
   // Getters
   bool get isLoggedIn => _isLoggedIn.value;
@@ -20,21 +23,27 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // ตรวจสอบสถานะการล็อกอินเมื่อเริ่มแอป
+    // Initialize storage service แล้วตรวจสอบสถานะการล็อกอิน
+    _initStorageAndCheckLogin();
+  }
+
+  Future<void> _initStorageAndCheckLogin() async {
+    await _storageService.init();
     _checkLoginStatus();
   }
 
   // ตรวจสอบสถานะการล็อกอิน
   Future<void> _checkLoginStatus() async {
     try {
-      // ตรวจสอบจาก SharedPreferences หรือ Secure Storage
-      // final token = await _storageService.getToken();
-      // if (token != null && await _validateToken(token)) {
-      //   _setLoggedIn(true);
-      //   NavigationHelper.toHome(clearStack: true);
-      // }
+      final token = _storageService.getToken();
+      if (token != null && token.isNotEmpty) {
+        _setLoggedIn(true);
+      } else {
+        _setLoggedIn(false);
+      }
     } catch (e) {
       debugPrint('Error checking login status: $e');
+      _setLoggedIn(false);
     }
   }
 
@@ -60,7 +69,13 @@ class AuthController extends GetxController {
         final data = jsonDecode(response.body);
         final token = data['data']['access'];
 
+        // บันทึก token ลงใน local storage
+        await _storageService.saveToken(token);
+
         _setLoggedIn(true);
+
+        NavigationHelper.toHome(clearStack: true);
+
         return true;
       } else {
         // login ไม่สำเร็จ
@@ -136,7 +151,7 @@ class AuthController extends GetxController {
       _setLoading(true);
 
       // ลบ token และข้อมูลผู้ใช้
-      // await _storageService.deleteToken();
+      await _storageService.deleteToken();
 
       _setLoggedIn(false);
       _setCurrentUser(null);

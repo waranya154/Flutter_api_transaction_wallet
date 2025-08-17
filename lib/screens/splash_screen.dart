@@ -84,11 +84,11 @@ class _SplashScreenState extends State<SplashScreen>
       final isLoggedIn = await _checkLoginStatus();
 
       if (isLoggedIn) {
-        // ถ้าล็อกอินแล้ว ไปหน้า Home (ถ้ามี)
-        // NavigationHelper.toHome(clearStack: true);
+        // ถ้าล็อกอินแล้ว ไปหน้า Home
+        NavigationHelper.toHome(clearStack: true);
 
-        // ปัจจุบันยังไม่มีหน้า Home ดังนั้นไปหน้า Login ก่อน
-        NavigationHelper.offAllNamed('/login');
+        // ถ้าล็อกอินแล้ว ไปหน้า Home
+        NavigationHelper.offAllNamed('/home');
       } else {
         // ถ้ายังไม่ล็อกอิน ไปหน้า Login
         NavigationHelper.offAllNamed('/login');
@@ -185,7 +185,9 @@ class _SplashScreenState extends State<SplashScreen>
                                     color: Colors.white,
                                     shadows: [
                                       Shadow(
-                                        color: Colors.black.withValues(alpha: 0.3),
+                                        color: Colors.black.withValues(
+                                          alpha: 0.3,
+                                        ),
                                         offset: const Offset(0, 2),
                                         blurRadius: 4,
                                       ),
