@@ -1,0 +1,3 @@
+final BASE_URL = 'https://transactions-cs.vercel.app';
+
+final LOGIN_ENDPOINT = '/api/auth/login';

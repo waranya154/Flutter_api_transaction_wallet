@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:form_validate/utils/api.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import '../utils/navigation_helper.dart';
 
 // AuthController สำหรับจัดการ state ของการ authentication
@@ -43,31 +46,43 @@ class AuthController extends GetxController {
       // จำลองการเรียก API
       await Future.delayed(const Duration(seconds: 2));
 
+      final serviceUrl = '$BASE_URL$LOGIN_ENDPOINT';
+
+      var url = Uri.parse(serviceUrl);
+      var response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response body: ${response.body}');
+
       // ตรวจสอบข้อมูล (จำลอง)
-      if (email == 'test@test.com' && password == '123456') {
-        final user = User(
-          id: '1',
-          email: email,
-          firstName: 'Test',
-          lastName: 'User',
-        );
+      // if (email == 'test@test.com' && password == '123456') {
+      //   final user = User(
+      //     id: '1',
+      //     email: email,
+      //     firstName: 'Test',
+      //     lastName: 'User',
+      //   );
 
-        _setCurrentUser(user);
-        _setLoggedIn(true);
+      //   _setCurrentUser(user);
+      //   _setLoggedIn(true);
 
-        // บันทึก token (จำลอง)
-        // await _storageService.saveToken('fake_token_123');
+      //   // บันทึก token (จำลอง)
+      //   // await _storageService.saveToken('fake_token_123');
 
-        NavigationHelper.showSuccessSnackBar('เข้าสู่ระบบสำเร็จ');
+      //   NavigationHelper.showSuccessSnackBar('เข้าสู่ระบบสำเร็จ');
 
-        // นำทางไปหน้า Home
-        // NavigationHelper.toHome(clearStack: true);
+      //   // นำทางไปหน้า Home
+      //   // NavigationHelper.toHome(clearStack: true);
 
-        return true;
-      } else {
-        NavigationHelper.showErrorSnackBar('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
-        return false;
-      }
+      //   return true;
+      // } else {
+      //   NavigationHelper.showErrorSnackBar('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+      //   return false;
+      // }
+      return true;
     } catch (e) {
       NavigationHelper.showErrorSnackBar('เกิดข้อผิดพลาด: ${e.toString()}');
       return false;
