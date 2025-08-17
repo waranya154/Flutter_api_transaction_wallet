@@ -4,7 +4,7 @@
 
 ## API ที่เรียกใช้
 
-- [https://github.com/Apisit250aps/transactions] https://github.com/Apisit250aps/transactions
+- https://github.com/Apisit250aps/transactions
 
 ## 📱 ฟีเจอร์หลัก
 
