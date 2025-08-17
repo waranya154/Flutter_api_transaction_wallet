@@ -151,7 +151,9 @@ class AuthController extends GetxController {
       _setLoading(true);
 
       // ลบ token และข้อมูลผู้ใช้
-      await _storageService.deleteToken();
+      final storageService = StorageService();
+      await storageService.init();
+      await storageService.deleteToken();
 
       _setLoggedIn(false);
       _setCurrentUser(null);

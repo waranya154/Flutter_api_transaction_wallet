@@ -77,10 +77,6 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _checkUserStatus() async {
     try {
-      // จำลองการตรวจสอบสถานะผู้ใช้
-      // ในอนาคตอาจตรวจสอบจาก SharedPreferences หรือ Secure Storage
-      await Future.delayed(const Duration(milliseconds: 500));
-
       // ตรวจสอบว่าผู้ใช้เคยล็อกอินหรือไม่
       final isLoggedIn = await _checkLoginStatus();
 
