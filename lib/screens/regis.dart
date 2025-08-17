@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../utils/navigation_helper.dart';
+import '../utils/api.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -31,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  // จำลองการสมัครสมาชิก
+  // ดำเนินการสมัครสมาชิก
   Future<void> _handleRegister() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -50,12 +54,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // จำลองการเรียก API
       await Future.delayed(const Duration(seconds: 2));
 
-      // แสดงผลสำเร็จ
-      NavigationHelper.showSuccessSnackBar('สมัครสมาชิกสำเร็จ');
+      final serviceUrl = '$BASE_URL$REGISTER_ENDPOINT';
 
-      // กลับไปหน้า Login
-      await Future.delayed(const Duration(milliseconds: 1500));
-      NavigationHelper.offNamed('/login');
+      var url = Uri.parse(serviceUrl);
+      var response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'name': _emailController.text,
+          'password': _passwordController.text,
+        }),
+      );
+
+      debugPrint('Response status: ${response.statusCode}');
+
+      // 201 แสดงว่าการสมัครสมาชิกสำเร็จ
+      if (response.statusCode == 201) {
+        // แสดงผลสำเร็จ
+        NavigationHelper.showSuccessSnackBar('สมัครสมาชิกสำเร็จ');
+        // กลับไปหน้า Login
+        await Future.delayed(const Duration(milliseconds: 1500));
+        NavigationHelper.offNamed('/login');
+
+        return;
+      } else {
+        NavigationHelper.showErrorSnackBar(
+          'สมัครสมาชิกไม่สำเร็จ: ${response.reasonPhrase}',
+        );
+
+        setState(() {
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       NavigationHelper.showErrorSnackBar(
         'สมัครสมาชิกไม่สำเร็จ กรุณาลองใหม่อีกครั้ง',
