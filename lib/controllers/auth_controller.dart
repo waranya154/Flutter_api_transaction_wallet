@@ -54,6 +54,9 @@ class AuthController extends GetxController {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
+      debugPrint(
+        'data : ${jsonEncode({'email': email, 'password': password})}',
+      );
       debugPrint('Response status: ${response.statusCode}');
       debugPrint('Response body: ${response.body}');
 
