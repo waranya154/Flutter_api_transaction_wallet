@@ -7,11 +7,11 @@ import 'routes/app_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Hive
   final directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
-  
+
   runApp(const MainApp());
 }
 
