@@ -37,6 +37,12 @@ class AuthController extends GetxController {
     try {
       final token = _storageService.getToken();
       if (token != null && token.isNotEmpty) {
+        // โหลดข้อมูล user จาก storage
+        final userData = _storageService.getUser();
+        if (userData != null) {
+          final user = User.fromJson(userData);
+          _setCurrentUser(user);
+        }
         _setLoggedIn(true);
       } else {
         _setLoggedIn(false);
@@ -82,8 +88,9 @@ class AuthController extends GetxController {
         );
         _setCurrentUser(user);
 
-        // บันทึก token ลงใน local storage
+        // บันทึก token และข้อมูล user ลงใน local storage
         await _storageService.saveToken(token);
+        await _storageService.saveUser(user.toJson());
 
         _setLoggedIn(true);
 
@@ -180,9 +187,8 @@ class AuthController extends GetxController {
       _setLoading(true);
 
       // ลบ token และข้อมูลผู้ใช้
-      final storageService = StorageService();
-      await storageService.init();
-      await storageService.deleteToken();
+      await _storageService.deleteToken();
+      await _storageService.deleteUser();
 
       _setLoggedIn(false);
       _setCurrentUser(null);

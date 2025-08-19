@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../controllers/auth_controller.dart';
-import '../utils/navigation_helper.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+  AppDrawer({super.key});
+
+  // ใช้ Get.find เพื่อดึง AuthController ที่ถูก inject แล้ว
+  final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return Obx(() {
+      final user = authController.currentUser;
+      
+      return Drawer(
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("SSKRU ComSci.co"),
-            accountEmail: Text("phisan.s@sskru.ac.th"),
+            accountName: Text(
+              user?.fullName ?? "Guest",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            accountEmail: Text(
+              user?.email ?? "",
+              style: TextStyle(fontSize: 16),
+            ),
             currentAccountPicture: CircleAvatar(
-              child: Icon(Icons.person, size: 40, color: Colors.white),
               backgroundColor: Colors.blueAccent,
+              child: Icon(Icons.person, size: 40, color: Colors.white),
             ),
-            decoration: BoxDecoration(
-              color: Colors.blueAccent, // เปลี่ยนเป็นสีพื้นหลังสวยงาม
-            ),
+            decoration: BoxDecoration(color: Colors.blueAccent),
             otherAccountsPictures: [
               CircleAvatar(
                 backgroundColor: Colors.white,
@@ -56,14 +66,12 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.logout),
             title: Text("Logout"),
             onTap: () {
-              AuthController authController = AuthController();
               authController.logout();
-
-              NavigationHelper.offAllNamed('/login');
             },
           ),
         ],
       ),
-    );
+      );
+    });
   }
 }

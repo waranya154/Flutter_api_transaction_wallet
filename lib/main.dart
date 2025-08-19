@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'controllers/auth_controller.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
 
@@ -11,6 +12,9 @@ void main() async {
   // Initialize Hive
   final directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
+
+  // Initialize AuthController globally
+  Get.put(AuthController(), permanent: true);
 
   runApp(const MainApp());
 }
