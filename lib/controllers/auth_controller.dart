@@ -69,6 +69,19 @@ class AuthController extends GetxController {
         final data = jsonDecode(response.body);
         final token = data['data']['access'];
 
+        // ดึงข้อมูลผู้ใช้
+        final userData = data['data']['auth'];
+
+        // สร้าง User object
+        final user = User(
+          id: userData['uuid'] ?? '',
+          email: userData['name'] ?? '',
+          firstName: userData['first_name'] ?? '',
+          lastName: userData['last_name'] ?? '',
+          profileImage: null, // หากไม่มีข้อมูลรูปภาพ
+        );
+        _setCurrentUser(user);
+
         // บันทึก token ลงใน local storage
         await _storageService.saveToken(token);
 
@@ -108,7 +121,12 @@ class AuthController extends GetxController {
       var response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'name': email, 'password': password}),
+        body: jsonEncode({
+          'name': email,
+          'password': password,
+          'first_name': firstName,
+          'last_name': lastName,
+        }),
       );
 
       if (response.statusCode == 201) {
