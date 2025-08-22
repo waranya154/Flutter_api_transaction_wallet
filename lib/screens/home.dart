@@ -6,7 +6,10 @@ import 'package:form_validate/utils/api.dart';
 import 'package:get/get.dart';
 import 'package:form_validate/components/drawer.dart';
 import 'package:http/http.dart' as http;
+
+import '../components/transaction_card.dart';
 import '../controllers/auth_controller.dart';
+import '../model/transaction.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -64,8 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(title: const Text('Home Page')),
       drawer: AppDrawer(),
       body: Obx(() {
-        final user = authController.currentUser;
-
         return FutureBuilder(
           future: _getAllTransaction(),
           builder: (context, snapshot) {
@@ -77,63 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView.builder(
                 itemCount: transactions.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(transactions[index].name),
-                    subtitle: Text(transactions[index].desc),
-                    trailing: Text(
-                      transactions[index].amount.toString(),
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: transactions[index].type == 1
-                            ? Colors.green
-                            : Colors.red,
-                      ),
-                    ),
-                  );
+                  return TransacCard(transaction: transactions[index]);
                 },
               );
             }
           },
         );
       }),
-    );
-  }
-}
-
-class Transaction {
-  final String uuid;
-  final String wallet;
-  final String name;
-  final String desc;
-  final int amount;
-  final int type;
-  final String date;
-  final String createdAt;
-  final String updatedAt;
-
-  Transaction({
-    required this.uuid,
-    required this.wallet,
-    required this.name,
-    required this.desc,
-    required this.amount,
-    required this.type,
-    required this.date,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  factory Transaction.fromJson(Map<String, dynamic> json) {
-    return Transaction(
-      uuid: json['uuid'] ?? '',
-      wallet: json['wallet'] ?? '',
-      name: json['name'] ?? '',
-      desc: json['desc'] ?? '',
-      amount: json['amount'] ?? 0,
-      type: json['type'] ?? 0,
-      date: json['date'] ?? '',
-      createdAt: json['created_at'] ?? '',
-      updatedAt: json['updated_at'] ?? '',
     );
   }
 }
