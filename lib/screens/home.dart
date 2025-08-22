@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import '../components/transaction_card.dart';
 import '../controllers/auth_controller.dart';
 import '../model/transaction.dart';
+import 'transaction_form.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -66,25 +67,58 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Home Page')),
       drawer: AppDrawer(),
-      body: Obx(() {
-        return FutureBuilder(
-          future: _getAllTransaction(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              return ListView.builder(
-                itemCount: transactions.length,
-                itemBuilder: (context, index) {
-                  return TransacCard(transaction: transactions[index]);
+      body: FutureBuilder(
+        future: _getAllTransaction(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return ListView.builder(
+              itemCount: transactions.length,
+              itemBuilder: (context, index) {
+                return TransacCard(transaction: transactions[index]);
+              },
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return DraggableScrollableSheet(
+                expand: false,
+                initialChildSize: 0.8,
+                minChildSize: 0.5,
+                maxChildSize: 1.0,
+                builder: (context, scrollController) {
+                  return Stack(
+                    children: [
+                      SingleChildScrollView(
+                        controller: scrollController,
+                        child: TransactionForm(),
+                      ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: IconButton(
+                          icon: const Icon(Icons.close, size: 28),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ),
+                    ],
+                  );
                 },
               );
-            }
-          },
-        );
-      }),
+            },
+          ); // Get.to(() => const TransactionForm());
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

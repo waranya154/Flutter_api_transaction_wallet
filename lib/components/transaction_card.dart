@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../model/transaction.dart';
+import '../screens/transaction_form.dart';
 
 class TransacCard extends StatelessWidget {
   const TransacCard({super.key, required this.transaction});
@@ -73,6 +74,38 @@ class TransacCard extends StatelessWidget {
         tileColor: Colors.white,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         minVerticalPadding: 12,
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return DraggableScrollableSheet(
+                expand: false,
+                initialChildSize: 0.8,
+                minChildSize: 0.5,
+                maxChildSize: 1.0,
+                builder: (context, scrollController) {
+                  return Stack(
+                    children: [
+                      SingleChildScrollView(
+                        controller: scrollController,
+                        child: TransactionForm(),
+                      ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: IconButton(
+                          icon: const Icon(Icons.close, size: 28),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          );
+        },
       ),
     );
   }
