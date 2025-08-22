@@ -34,7 +34,6 @@ class AuthController extends GetxController {
 
   // ตรวจสอบสถานะการล็อกอิน
   Future<void> _checkLoginStatus() async {
-    debugPrint('Checking login status...');
     try {
       final token = _storageService.getToken();
       if (token != null && token.isNotEmpty) {
