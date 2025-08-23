@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/auth_controller.dart';
+import '../utils/navigation_helper.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({super.key});
@@ -45,23 +46,25 @@ class AppDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.home),
               title: Text("Home"),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
-            ListTile(
-              leading: Icon(Icons.account_box),
-              title: Text("About"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.grid_3x3_outlined),
-              title: Text("Products"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.contact_mail),
-              title: Text("Contact"),
-              onTap: () {},
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.account_box),
+            //   title: Text("About"),
+            //   onTap: () {},
+            // ),
+            // ListTile(
+            //   leading: Icon(Icons.grid_3x3_outlined),
+            //   title: Text("Products"),
+            //   onTap: () {},
+            // ),
+            // ListTile(
+            //   leading: Icon(Icons.contact_mail),
+            //   title: Text("Contact"),
+            //   onTap: () {},
+            // ),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("Logout"),
