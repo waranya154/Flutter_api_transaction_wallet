@@ -98,6 +98,12 @@ class _TransactionFormState extends State<TransactionForm> {
 
       if (response.statusCode == 200) {
         debugPrint('Transaction updated successfully');
+        // ปรับปรุงข้อมูลใน TransactionController
+        final responseData = jsonDecode(response.body);
+        final updatedTransaction = TransactionData.fromJson(
+          responseData['data'],
+        );
+        transactionController.updateTransaction(updatedTransaction);
       } else {
         debugPrint('Failed to create transaction: ${response.reasonPhrase}');
         throw Exception('Failed to create transaction');
@@ -155,18 +161,34 @@ class _TransactionFormState extends State<TransactionForm> {
   @override
   void initState() {
     super.initState();
-    if (widget.transaction != null) {
-      // นำค่าจาก transaction ที่ส่งมาเติมในฟอร์ม
-      _nameController.text = widget.transaction.name;
-      _descController.text = widget.transaction.desc;
-      _amountController.text = widget.transaction.amount.toString();
-      _type = widget.transaction.type;
-      _selectedDate = DateTime.parse(widget.transaction.date);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.transaction != null) {
+      // ดึงข้อมูลล่าสุดจาก TransactionController ด้วย uuid
+      final transactionController = Get.find<TransactionController>();
+      final latestTransaction = transactionController.getTransactionByUuid(
+        widget.transaction.uuid,
+      );
+
+      if (latestTransaction != null) {
+        // ในกรณีที่ edit
+        _nameController.text = latestTransaction.name;
+        _descController.text = latestTransaction.desc;
+        _amountController.text = latestTransaction.amount.toString();
+        _type = latestTransaction.type;
+        _selectedDate = DateTime.tryParse(latestTransaction.date);
+      } else {
+        // fallback กรณีไม่พบใน controller
+        _nameController.text = widget.transaction.name;
+        _descController.text = widget.transaction.desc;
+        _amountController.text = widget.transaction.amount.toString();
+        _type = widget.transaction.type;
+        _selectedDate = DateTime.tryParse(widget.transaction.date);
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Form(
