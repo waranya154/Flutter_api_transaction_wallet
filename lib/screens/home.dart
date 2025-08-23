@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home Page')),
+      appBar: AppBar(title: const Text('บันทึกการเงิน')),
       drawer: AppDrawer(),
       body: FutureBuilder(
         future: _getAllTransaction(),
