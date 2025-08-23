@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 
 import '../components/transaction_card.dart';
 import '../controllers/auth_controller.dart';
+import '../controllers/transac_controller.dart';
 import '../model/transaction.dart';
 import 'transaction_form.dart';
 
@@ -23,8 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final AuthController authController = Get.find<AuthController>();
   final StorageService _storageService = StorageService();
 
-  // ใช้ RxList เพื่อให้ GUI อัปเดตเมื่อข้อมูลเปลี่ยน
-  final RxList<TransactionData> transactions = <TransactionData>[].obs;
+  // ใช้งาน TransactionController แทน RxList
+  final TransactionController transactionController = Get.put(
+    TransactionController(),
+  );
 
   Future<List<TransactionData>> _getAllTransaction() async {
     await _storageService.init();
@@ -48,14 +51,17 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         final json = jsonDecode(response.body);
         final list = json['data'] as List<dynamic>;
-        transactions.value = list
-            .map(
-              (item) => TransactionData.fromJson(item as Map<String, dynamic>),
-            )
-            .toList();
+        transactionController.setTransactions(
+          list
+              .map(
+                (item) =>
+                    TransactionData.fromJson(item as Map<String, dynamic>),
+              )
+              .toList(),
+        );
       }
 
-      return transactions;
+      return transactionController.transactions;
     } catch (e) {
       debugPrint('Error fetching transactions: $e');
       return [];
@@ -78,9 +84,11 @@ class _HomeScreenState extends State<HomeScreen> {
             // ใช้ Obx เพื่อให้ GUI อัปเดตเมื่อ transactions เปลี่ยน
             return Obx(
               () => ListView.builder(
-                itemCount: transactions.length,
+                itemCount: transactionController.transactions.length,
                 itemBuilder: (context, index) {
-                  return TransacCard(transaction: transactions[index]);
+                  return TransacCard(
+                    transaction: transactionController.transactions[index],
+                  );
                 },
               ),
             );

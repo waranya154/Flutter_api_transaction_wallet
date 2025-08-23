@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:get/get.dart';
+import '../controllers/transac_controller.dart';
 
+import '../model/transaction.dart';
 import '../services/storage_service.dart';
 import '../utils/api.dart';
 
@@ -22,6 +25,8 @@ class _TransactionFormState extends State<TransactionForm> {
   DateTime? _selectedDate;
 
   final StorageService _storageService = StorageService();
+
+  final transactionController = Get.find<TransactionController>();
 
   Future<void> _submitCreateForm() async {
     if (_formKey.currentState!.validate() && _selectedDate != null) {
@@ -51,6 +56,10 @@ class _TransactionFormState extends State<TransactionForm> {
 
       if (response.statusCode == 201) {
         debugPrint('Transaction Created successfully');
+        // เพิ่มข้อมูลใหม่ใน TransactionController
+        final responseData = jsonDecode(response.body);
+        final newTransaction = TransactionData.fromJson(responseData['data']);
+        transactionController.addTransaction(newTransaction);
       } else {
         debugPrint('Failed to create transaction: ${response.reasonPhrase}');
         throw Exception('Failed to create transaction');
@@ -118,6 +127,8 @@ class _TransactionFormState extends State<TransactionForm> {
 
       if (response.statusCode == 200) {
         debugPrint('Transaction deleted successfully');
+        // อัปเดตข้อมูลใน TransactionController
+        transactionController.removeTransaction(widget.transaction.uuid);
       } else {
         debugPrint('Failed to create transaction: ${response.reasonPhrase}');
         throw Exception('Failed to create transaction');
