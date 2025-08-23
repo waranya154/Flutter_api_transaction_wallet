@@ -89,7 +89,7 @@ class TransacCard extends StatelessWidget {
                     children: [
                       SingleChildScrollView(
                         controller: scrollController,
-                        child: TransactionForm(),
+                        child: TransactionForm(transaction: transaction),
                       ),
                       Positioned(
                         top: 8,

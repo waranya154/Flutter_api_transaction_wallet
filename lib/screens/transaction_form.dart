@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../services/storage_service.dart';
+import '../utils/api.dart';
+
 class TransactionForm extends StatefulWidget {
-  const TransactionForm({super.key});
+  final dynamic transaction;
+  const TransactionForm({super.key, this.transaction});
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
@@ -16,8 +21,14 @@ class _TransactionFormState extends State<TransactionForm> {
   int _type = -1;
   DateTime? _selectedDate;
 
-  void _submitForm() {
+  final StorageService _storageService = StorageService();
+
+  Future<void> _submitCreateForm() async {
     if (_formKey.currentState!.validate() && _selectedDate != null) {
+      await _storageService.init();
+
+      final token = _storageService.getToken();
+
       final data = {
         "name": _nameController.text,
         "desc": _descController.text,
@@ -25,9 +36,64 @@ class _TransactionFormState extends State<TransactionForm> {
         "type": _type,
         "date": _selectedDate!.toIso8601String().substring(0, 10),
       };
-      final jsonData = jsonEncode(data);
-      debugPrint("ส่งข้อมูล: $jsonData");
-      // ส่ง jsonData ไป backend ได้ที่นี่
+
+      final serviceUrl = '$BASE_URL$CREATE_TRANSACTION_ENDPOINT';
+
+      var response = await http.post(
+        Uri.parse(serviceUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          "app_version": "1.2.0",
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 201) {
+        debugPrint('Transaction Created successfully');
+      } else {
+        debugPrint('Failed to create transaction: ${response.reasonPhrase}');
+        throw Exception('Failed to create transaction');
+      }
+
+      Navigator.of(context).pop();
+    }
+  }
+
+  Future<void> _submitUpdateForm() async {
+    if (_formKey.currentState!.validate() && _selectedDate != null) {
+      await _storageService.init();
+
+      final token = _storageService.getToken();
+
+      final data = {
+        "name": _nameController.text,
+        "desc": _descController.text,
+        "amount": int.tryParse(_amountController.text) ?? 0,
+        "type": _type,
+        "date": _selectedDate!.toIso8601String().substring(0, 10),
+      };
+
+      final serviceUrl =
+          '$BASE_URL$CREATE_TRANSACTION_ENDPOINT/${widget.transaction.uuid}';
+
+      var response = await http.put(
+        Uri.parse(serviceUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          "app_version": "1.2.0",
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('Transaction updated successfully');
+      } else {
+        debugPrint('Failed to create transaction: ${response.reasonPhrase}');
+        throw Exception('Failed to create transaction');
+      }
+
       Navigator.of(context).pop();
     }
   }
@@ -47,6 +113,19 @@ class _TransactionFormState extends State<TransactionForm> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.transaction != null) {
+      // นำค่าจาก transaction ที่ส่งมาเติมในฟอร์ม
+      _nameController.text = widget.transaction.name;
+      _descController.text = widget.transaction.desc;
+      _amountController.text = widget.transaction.amount.toString();
+      _type = widget.transaction.type;
+      _selectedDate = DateTime.parse(widget.transaction.date);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -56,8 +135,11 @@ class _TransactionFormState extends State<TransactionForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 40),
+
             Text(
-              'บันทึกข้อมูลการทำรายการ',
+              widget.transaction != null
+                  ? 'แก้ไขข้อมูลการทำรายการ'
+                  : 'บันทึกข้อมูลการทำรายการ',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 16),
@@ -113,7 +195,11 @@ class _TransactionFormState extends State<TransactionForm> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _submitForm,
+              onPressed: () {
+                widget.transaction != null
+                    ? _submitUpdateForm()
+                    : _submitCreateForm();
+              }, //_submitForm,
               child: const Text('บันทึกข้อมูล'),
             ),
           ],
