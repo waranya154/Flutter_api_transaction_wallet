@@ -98,6 +98,35 @@ class _TransactionFormState extends State<TransactionForm> {
     }
   }
 
+  Future<void> _submitDeleteForm() async {
+    if (_formKey.currentState!.validate() && _selectedDate != null) {
+      await _storageService.init();
+
+      final token = _storageService.getToken();
+
+      final serviceUrl =
+          '$BASE_URL$CREATE_TRANSACTION_ENDPOINT/${widget.transaction.uuid}';
+
+      var response = await http.delete(
+        Uri.parse(serviceUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          "app_version": "1.2.0",
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('Transaction deleted successfully');
+      } else {
+        debugPrint('Failed to create transaction: ${response.reasonPhrase}');
+        throw Exception('Failed to create transaction');
+      }
+
+      Navigator.of(context).pop();
+    }
+  }
+
   Future<void> _pickDate() async {
     final picked = await showDatePicker(
       context: context,
@@ -194,13 +223,29 @@ class _TransactionFormState extends State<TransactionForm> {
               ],
             ),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    widget.transaction != null
+                        ? _submitUpdateForm()
+                        : _submitCreateForm();
+                  }, //_submitForm,
+                  child: const Text('บันทึกข้อมูล'),
+                ),
                 widget.transaction != null
-                    ? _submitUpdateForm()
-                    : _submitCreateForm();
-              }, //_submitForm,
-              child: const Text('บันทึกข้อมูล'),
+                    ? const SizedBox(width: 16)
+                    : Container(),
+                widget.transaction != null
+                    ? ElevatedButton(
+                        onPressed: () {
+                          _submitDeleteForm();
+                        },
+                        child: Text('ลบข้อมูล'),
+                      )
+                    : Container(),
+              ],
             ),
           ],
         ),
