@@ -1,4 +1,4 @@
-class Transaction {
+class TransactionData {
   final String uuid;
   final String wallet;
   final String name;
@@ -9,7 +9,7 @@ class Transaction {
   final String createdAt;
   final String updatedAt;
 
-  Transaction({
+  TransactionData({
     required this.uuid,
     required this.wallet,
     required this.name,
@@ -21,8 +21,8 @@ class Transaction {
     required this.updatedAt,
   });
 
-  factory Transaction.fromJson(Map<String, dynamic> json) {
-    return Transaction(
+  factory TransactionData.fromJson(Map<String, dynamic> json) {
+    return TransactionData(
       uuid: json['uuid'] ?? '',
       wallet: json['wallet'] ?? '',
       name: json['name'] ?? '',

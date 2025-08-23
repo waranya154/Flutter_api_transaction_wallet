@@ -23,10 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final AuthController authController = Get.find<AuthController>();
   final StorageService _storageService = StorageService();
 
-  List<Transaction> transactions = [];
+  // ใช้ RxList เพื่อให้ GUI อัปเดตเมื่อข้อมูลเปลี่ยน
+  final RxList<TransactionData> transactions = <TransactionData>[].obs;
 
-  Future<List<Transaction>> _getAllTransaction() async {
-    // Simulate a network call to fetch transactions
+  Future<List<TransactionData>> _getAllTransaction() async {
     await _storageService.init();
 
     final token = _storageService.getToken();
@@ -47,11 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
         throw Exception('Failed to load transactions');
       } else {
         final json = jsonDecode(response.body);
-
         final list = json['data'] as List<dynamic>;
-
-        transactions = list
-            .map((item) => Transaction.fromJson(item as Map<String, dynamic>))
+        transactions.value = list
+            .map(
+              (item) => TransactionData.fromJson(item as Map<String, dynamic>),
+            )
             .toList();
       }
 
@@ -75,11 +75,14 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            return ListView.builder(
-              itemCount: transactions.length,
-              itemBuilder: (context, index) {
-                return TransacCard(transaction: transactions[index]);
-              },
+            // ใช้ Obx เพื่อให้ GUI อัปเดตเมื่อ transactions เปลี่ยน
+            return Obx(
+              () => ListView.builder(
+                itemCount: transactions.length,
+                itemBuilder: (context, index) {
+                  return TransacCard(transaction: transactions[index]);
+                },
+              ),
             );
           }
         },
@@ -115,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               );
             },
-          ); // Get.to(() => const TransactionForm());
+          );
         },
         child: const Icon(Icons.add),
       ),

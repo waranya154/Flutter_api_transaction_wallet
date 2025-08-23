@@ -5,7 +5,7 @@ import '../screens/transaction_form.dart';
 class TransacCard extends StatelessWidget {
   const TransacCard({super.key, required this.transaction});
 
-  final Transaction transaction;
+  final TransactionData transaction;
 
   @override
   Widget build(BuildContext context) {
