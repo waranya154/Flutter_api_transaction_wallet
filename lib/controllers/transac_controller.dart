@@ -21,6 +21,7 @@ class TransactionController extends GetxController {
     final index = transactions.indexWhere(
       (item) => item.uuid == transaction.uuid,
     );
+    debugPrint('Update transaction at index: $index');
     if (index != -1) {
       transactions[index] = transaction;
     }

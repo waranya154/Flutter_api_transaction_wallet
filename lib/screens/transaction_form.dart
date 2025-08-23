@@ -100,9 +100,15 @@ class _TransactionFormState extends State<TransactionForm> {
         debugPrint('Transaction updated successfully');
         // ปรับปรุงข้อมูลใน TransactionController
         final responseData = jsonDecode(response.body);
+
+        // รักษาข้อมูลเดิมบางส่วนไว้
+        responseData['data']['uuid'] = widget.transaction.uuid;
+        responseData['data']['createdAt'] = widget.transaction.createdAt;
+
         final updatedTransaction = TransactionData.fromJson(
           responseData['data'],
         );
+
         transactionController.updateTransaction(updatedTransaction);
       } else {
         debugPrint('Failed to create transaction: ${response.reasonPhrase}');
