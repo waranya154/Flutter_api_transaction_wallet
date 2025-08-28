@@ -155,10 +155,10 @@ class _SplashScreenState extends State<SplashScreen>
                                   ),
                                 ],
                               ),
-                              child: const Icon(
-                                Icons.security,
-                                size: 60,
-                                color: Colors.blue,
+                              child: Icon(
+                                Icons.account_balance_wallet_rounded,
+                                size: 64,
+                                color: Colors.blue[700],
                               ),
                             ),
                           ),
@@ -179,16 +179,15 @@ class _SplashScreenState extends State<SplashScreen>
                             child: Column(
                               children: [
                                 Text(
-                                  'SSKRU ComSci',
+                                  'TangJa',
                                   style: TextStyle(
-                                    fontSize: 28,
+                                    fontSize: 32,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
+                                    letterSpacing: 1.2,
                                     shadows: [
                                       Shadow(
-                                        color: Colors.black.withValues(
-                                          alpha: 0.3,
-                                        ),
+                                        color: Colors.black.withOpacity(0.15),
                                         offset: const Offset(0, 2),
                                         blurRadius: 4,
                                       ),
@@ -197,10 +196,10 @@ class _SplashScreenState extends State<SplashScreen>
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'Secure • Simple • Smart',
+                                  'Wallet for your simple life',
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: Colors.white.withValues(alpha: 0.9),
+                                    color: Colors.white.withOpacity(0.9),
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
@@ -227,7 +226,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 child: CircularProgressIndicator(
                                   strokeWidth: 3,
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white.withValues(alpha: 0.8),
+                                    Colors.white.withOpacity(0.8),
                                   ),
                                 ),
                               ),
@@ -236,7 +235,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 'กำลังเตรียมแอปพลิเคชัน...',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.white.withValues(alpha: 0.8),
+                                  color: Colors.white.withOpacity(0.8),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -263,15 +262,15 @@ class _SplashScreenState extends State<SplashScreen>
                             'เวอร์ชัน 1.0.0',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.white.withValues(alpha: 0.7),
+                              color: Colors.white.withOpacity(0.7),
                             ),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            '© 2024 Form Validate App',
+                            '© 2025 TangJa Wallet',
                             style: TextStyle(
                               fontSize: 10,
-                              color: Colors.white.withValues(alpha: 0.6),
+                              color: Colors.white.withOpacity(0.6),
                             ),
                           ),
                         ],
