@@ -71,9 +71,31 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('บันทึกการเงิน')),
+      backgroundColor: const Color(0xFFF6F8FB),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 2,
+        centerTitle: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.account_balance_wallet_rounded, color: Colors.blue[700]),
+            const SizedBox(width: 8),
+            Text(
+              'TangJa',
+              style: TextStyle(
+                color: Colors.blue[700],
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                letterSpacing: 1.2,
+              ),
+            ),
+          ],
+        ),
+        iconTheme: IconThemeData(color: Colors.blue[700]),
+      ),
       drawer: AppDrawer(),
-      body: FutureBuilder(
+      body: FutureBuilder<List<TransactionData>>(
         future: _getAllTransaction(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -81,25 +103,43 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            // ใช้ Obx เพื่อให้ GUI อัปเดตเมื่อ transactions เปลี่ยน
             return Obx(
-              () => ListView.builder(
-                itemCount: transactionController.transactions.length,
-                itemBuilder: (context, index) {
-                  return TransacCard(
-                    transaction: transactionController.transactions[index],
-                  );
-                },
-              ),
+              () => transactionController.transactions.isEmpty
+                  ? Center(
+                      child: Text(
+                        'ยังไม่มีรายการธุรกรรม',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 18,
+                        ),
+                      ),
+                    )
+                  : ListView.separated(
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                      itemCount: transactionController.transactions.length,
+                      separatorBuilder: (context, index) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        return Material(
+                          elevation: 2,
+                          borderRadius: BorderRadius.circular(16),
+                          child: TransacCard(
+                            transaction: transactionController.transactions[index],
+                          ),
+                        );
+                      },
+                    ),
             );
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[700],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         onPressed: () {
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
+            backgroundColor: Colors.transparent,
             builder: (context) {
               return DraggableScrollableSheet(
                 expand: false,
@@ -107,29 +147,41 @@ class _HomeScreenState extends State<HomeScreen> {
                 minChildSize: 0.5,
                 maxChildSize: 1.0,
                 builder: (context, scrollController) {
-                  return Stack(
-                    children: [
-                      SingleChildScrollView(
-                        controller: scrollController,
-                        child: TransactionForm(),
-                      ),
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: IconButton(
-                          icon: const Icon(Icons.close, size: 28),
-                          onPressed: () => Navigator.of(context).pop(),
+                  return Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          offset: Offset(0, -2),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        SingleChildScrollView(
+                          controller: scrollController,
+                          child: TransactionForm(),
+                        ),
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: IconButton(
+                            icon: const Icon(Icons.close, size: 28),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 },
               );
             },
           );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, size: 32),
       ),
     );
   }
-}
