@@ -54,4 +54,18 @@ class TransactionController extends GetxController {
     }
     return null;
   }
+
+  // ฟังก์ชันคำนวณยอดรวมรายรับ (type == 1)
+  int getTotalIncome() {
+    return transactions
+        .where((item) => item.type == 1)
+        .fold(0, (sum, item) => sum + item.amount);
+  }
+
+  // ฟังก์ชันคำนวณยอดรวมรายจ่าย (type == 2 หรือ type == -1)
+  int getTotalExpense() {
+    return transactions
+        .where((item) => item.type == 2 || item.type == -1)
+        .fold(0, (sum, item) => sum + item.amount);
+  }
 }

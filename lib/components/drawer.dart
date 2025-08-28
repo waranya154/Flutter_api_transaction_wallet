@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/auth_controller.dart';
+import '../controllers/transac_controller.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({super.key});
 
   // ใช้ Get.find เพื่อดึง AuthController ที่ถูก inject แล้ว
   final AuthController authController = Get.find<AuthController>();
+
+  // ใช้ Get.find เพื่อดึง TransactionController ที่ถูก inject แล้ว
+  final TransactionController transactionController =
+      Get.find<TransactionController>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +46,37 @@ class AppDrawer extends StatelessWidget {
                 ),
               ],
             ),
+            // แสดงยอดรวมรายรับและรายจ่าย
+            Obx(() {
+              final income = transactionController.getTotalIncome();
+              final expense = transactionController.getTotalExpense();
+              return Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.arrow_downward, color: Colors.green),
+                    title: Text(
+                      'รวมรายรับ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      '$income บาท',
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.arrow_upward, color: Colors.red),
+                    title: Text(
+                      'รวมรายจ่าย',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      '$expense บาท',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ],
+              );
+            }),
             ListTile(
               leading: Icon(Icons.home),
               title: Text("Home"),
