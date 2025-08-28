@@ -58,6 +58,7 @@ class MainApp extends StatelessWidget {
       ),
 
       theme: ThemeData(
+        fontFamily: 'Itim',
         scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
         primarySwatch: Colors.blue,
         primaryColor: Colors.blue[700],
@@ -76,29 +77,37 @@ class MainApp extends StatelessWidget {
         ),
 
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+          style: ButtonStyle(
+            textStyle: MaterialStatePropertyAll(
+              TextStyle(
+                fontFamily: 'Itim',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            minimumSize: const Size(88, 48),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            textStyle: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+            backgroundColor: MaterialStatePropertyAll(Colors.blue),
+            foregroundColor: MaterialStatePropertyAll(Colors.white),
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             ),
-            elevation: 2,
+            minimumSize: MaterialStatePropertyAll(Size(88, 48)),
+            padding: MaterialStatePropertyAll(
+              EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            ),
+            elevation: MaterialStatePropertyAll(2),
           ),
         ),
 
         textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.blue[600],
-            textStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+          style: ButtonStyle(
+            textStyle: MaterialStatePropertyAll(
+              TextStyle(
+                fontFamily: 'Itim',
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
+            foregroundColor: MaterialStatePropertyAll(Colors.blue[600]),
           ),
         ),
 
@@ -129,11 +138,13 @@ class MainApp extends StatelessWidget {
             color: Colors.grey[700],
             fontSize: 18,
             fontWeight: FontWeight.w400,
+            fontFamily: 'Itim',
           ),
           floatingLabelStyle: TextStyle(
             color: Colors.blue[600],
             fontSize: 22,
             fontWeight: FontWeight.w500,
+            fontFamily: 'Itim',
           ),
         ),
       ),
