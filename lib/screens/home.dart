@@ -108,22 +108,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? Center(
                       child: Text(
                         'ยังไม่มีรายการธุรกรรม',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 18,
-                        ),
+                        style: TextStyle(color: Colors.grey[600], fontSize: 18),
                       ),
                     )
                   : ListView.separated(
-                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 12,
+                      ),
                       itemCount: transactionController.transactions.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 12),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
                       itemBuilder: (context, index) {
                         return Material(
                           elevation: 2,
                           borderRadius: BorderRadius.circular(16),
                           child: TransacCard(
-                            transaction: transactionController.transactions[index],
+                            transaction:
+                                transactionController.transactions[index],
                           ),
                         );
                       },
@@ -150,7 +152,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Container(
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(24),
+                      ),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black12,
@@ -185,3 +189,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
