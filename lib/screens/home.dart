@@ -79,12 +79,12 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.account_balance_wallet_rounded, color: Colors.blue[700]),
+            Icon(Icons.account_balance_wallet_rounded, color: Color(0xFF4CAF50)),
             const SizedBox(width: 8),
             Text(
               'TangJa',
               style: TextStyle(
-                color: Colors.blue[700],
+                color: Color(0xFF4CAF50),
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
                 letterSpacing: 1.2,
@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        iconTheme: IconThemeData(color: Colors.blue[700]),
+        iconTheme: IconThemeData(color: Color(0xFF4CAF50)),
       ),
       drawer: AppDrawer(),
       body: FutureBuilder<List<TransactionData>>(
@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue[700],
+        backgroundColor: Color(0xFFFF9800),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         onPressed: () {
           showModalBottomSheet(

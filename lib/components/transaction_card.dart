@@ -15,9 +15,7 @@ class TransacCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: transaction.type == 1
-              ? Colors.green
-              : ThemeData().primaryColorLight,
+          color: transaction.type == 1 ? Colors.green : Colors.red,
           width: 2,
         ),
         boxShadow: [

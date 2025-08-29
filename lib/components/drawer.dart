@@ -31,10 +31,11 @@ class AppDrawer extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: Color(0xFFFF9800),
                 child: Icon(Icons.person, size: 40, color: Colors.white),
               ),
-              decoration: BoxDecoration(color: Colors.blueAccent),
+              decoration: BoxDecoration(color: Color(0xFF4CAF50),
+              ),
               otherAccountsPictures: [
                 CircleAvatar(
                   backgroundColor: Colors.white,

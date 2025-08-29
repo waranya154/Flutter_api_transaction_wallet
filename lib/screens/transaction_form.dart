@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get/get.dart';
 import '../controllers/transac_controller.dart';
-
 import '../model/transaction.dart';
 import '../services/storage_service.dart';
 import '../utils/api.dart';
@@ -25,15 +24,12 @@ class _TransactionFormState extends State<TransactionForm> {
   DateTime? _selectedDate;
 
   final StorageService _storageService = StorageService();
-
   final transactionController = Get.find<TransactionController>();
 
   Future<void> _submitCreateForm() async {
     if (_formKey.currentState!.validate() && _selectedDate != null) {
       await _storageService.init();
-
       final token = _storageService.getToken();
-
       final data = {
         "name": _nameController.text,
         "desc": _descController.text,
@@ -41,9 +37,7 @@ class _TransactionFormState extends State<TransactionForm> {
         "type": _type,
         "date": _selectedDate!.toIso8601String().substring(0, 10),
       };
-
       final serviceUrl = '$BASE_URL$CREATE_TRANSACTION_ENDPOINT';
-
       var response = await http.post(
         Uri.parse(serviceUrl),
         headers: {
@@ -53,10 +47,8 @@ class _TransactionFormState extends State<TransactionForm> {
         },
         body: jsonEncode(data),
       );
-
       if (response.statusCode == 201) {
         debugPrint('Transaction Created successfully');
-        // เพิ่มข้อมูลใหม่ใน TransactionController
         final responseData = jsonDecode(response.body);
         final newTransaction = TransactionData.fromJson(responseData['data']);
         transactionController.addTransaction(newTransaction);
@@ -64,7 +56,6 @@ class _TransactionFormState extends State<TransactionForm> {
         debugPrint('Failed to create transaction: ${response.reasonPhrase}');
         throw Exception('Failed to create transaction');
       }
-
       Navigator.of(context).pop();
     }
   }
@@ -72,9 +63,7 @@ class _TransactionFormState extends State<TransactionForm> {
   Future<void> _submitUpdateForm() async {
     if (_formKey.currentState!.validate() && _selectedDate != null) {
       await _storageService.init();
-
       final token = _storageService.getToken();
-
       final data = {
         "name": _nameController.text,
         "desc": _descController.text,
@@ -82,10 +71,8 @@ class _TransactionFormState extends State<TransactionForm> {
         "type": _type,
         "date": _selectedDate!.toIso8601String().substring(0, 10),
       };
-
       final serviceUrl =
           '$BASE_URL$CREATE_TRANSACTION_ENDPOINT/${widget.transaction.uuid}';
-
       var response = await http.put(
         Uri.parse(serviceUrl),
         headers: {
@@ -95,26 +82,19 @@ class _TransactionFormState extends State<TransactionForm> {
         },
         body: jsonEncode(data),
       );
-
       if (response.statusCode == 200) {
         debugPrint('Transaction updated successfully');
-        // ปรับปรุงข้อมูลใน TransactionController
         final responseData = jsonDecode(response.body);
-
-        // รักษาข้อมูลเดิมบางส่วนไว้
         responseData['data']['uuid'] = widget.transaction.uuid;
         responseData['data']['createdAt'] = widget.transaction.createdAt;
-
         final updatedTransaction = TransactionData.fromJson(
           responseData['data'],
         );
-
         transactionController.updateTransaction(updatedTransaction);
       } else {
         debugPrint('Failed to create transaction: ${response.reasonPhrase}');
         throw Exception('Failed to create transaction');
       }
-
       Navigator.of(context).pop();
     }
   }
@@ -122,12 +102,9 @@ class _TransactionFormState extends State<TransactionForm> {
   Future<void> _submitDeleteForm() async {
     if (_formKey.currentState!.validate() && _selectedDate != null) {
       await _storageService.init();
-
       final token = _storageService.getToken();
-
       final serviceUrl =
           '$BASE_URL$CREATE_TRANSACTION_ENDPOINT/${widget.transaction.uuid}';
-
       var response = await http.delete(
         Uri.parse(serviceUrl),
         headers: {
@@ -136,16 +113,13 @@ class _TransactionFormState extends State<TransactionForm> {
           'Authorization': 'Bearer $token',
         },
       );
-
       if (response.statusCode == 200) {
         debugPrint('Transaction deleted successfully');
-        // อัปเดตข้อมูลใน TransactionController
         transactionController.removeTransaction(widget.transaction.uuid);
       } else {
         debugPrint('Failed to create transaction: ${response.reasonPhrase}');
         throw Exception('Failed to create transaction');
       }
-
       Navigator.of(context).pop();
     }
   }
@@ -172,21 +146,17 @@ class _TransactionFormState extends State<TransactionForm> {
   @override
   Widget build(BuildContext context) {
     if (widget.transaction != null) {
-      // ดึงข้อมูลล่าสุดจาก TransactionController ด้วย uuid
       final transactionController = Get.find<TransactionController>();
       final latestTransaction = transactionController.getTransactionByUuid(
         widget.transaction.uuid,
       );
-
       if (latestTransaction != null) {
-        // ในกรณีที่ edit
         _nameController.text = latestTransaction.name;
         _descController.text = latestTransaction.desc;
         _amountController.text = latestTransaction.amount.toString();
         _type = latestTransaction.type;
         _selectedDate = DateTime.tryParse(latestTransaction.date);
       } else {
-        // fallback กรณีไม่พบใน controller
         _nameController.text = widget.transaction.name;
         _descController.text = widget.transaction.desc;
         _amountController.text = widget.transaction.amount.toString();
@@ -203,7 +173,6 @@ class _TransactionFormState extends State<TransactionForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 40),
-
             Text(
               widget.transaction != null
                   ? 'แก้ไขข้อมูลการทำรายการ'
@@ -211,31 +180,77 @@ class _TransactionFormState extends State<TransactionForm> {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 16),
+            // ชื่อรายการ
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'ชื่อรายการ'),
+              cursorColor: Color(0xFF4CAF50),
+              style: TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'ชื่อรายการ',
+                floatingLabelStyle: TextStyle(color: Color(0xFF4CAF50)),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF4CAF50)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+              ),
               validator: (value) =>
                   value == null || value.isEmpty ? 'กรุณากรอกชื่อรายการ' : null,
             ),
             const SizedBox(height: 16),
+            // รายละเอียด
             TextFormField(
               controller: _descController,
-              decoration: const InputDecoration(labelText: 'รายละเอียด'),
+              cursorColor: Color(0xFF4CAF50),
+              style: TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'รายละเอียด',
+                floatingLabelStyle: TextStyle(color: Color(0xFF4CAF50)),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF4CAF50)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+              ),
               validator: (value) =>
                   value == null || value.isEmpty ? 'กรุณากรอกรายละเอียด' : null,
             ),
             const SizedBox(height: 16),
+            // จำนวนเงิน
             TextFormField(
               controller: _amountController,
-              decoration: const InputDecoration(labelText: 'จำนวนเงิน'),
               keyboardType: TextInputType.number,
+              cursorColor: Color(0xFF4CAF50),
+              style: TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'จำนวนเงิน',
+                floatingLabelStyle: TextStyle(color: Color(0xFF4CAF50)),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF4CAF50)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+              ),
               validator: (value) =>
                   value == null || value.isEmpty ? 'กรุณากรอกจำนวนเงิน' : null,
             ),
             const SizedBox(height: 16),
+            // ประเภท
             DropdownButtonFormField<int>(
               value: _type,
-              decoration: const InputDecoration(labelText: 'ประเภท'),
+              decoration: InputDecoration(
+                labelText: 'ประเภท',
+                floatingLabelStyle: TextStyle(color: Color(0xFF4CAF50)),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF4CAF50)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+              ),
               items: const [
                 DropdownMenuItem(value: 1, child: Text('รายรับ')),
                 DropdownMenuItem(value: -1, child: Text('รายจ่าย')),
@@ -246,6 +261,8 @@ class _TransactionFormState extends State<TransactionForm> {
                 });
               },
             ),
+            const SizedBox(height: 16),
+            // วันที่
             Row(
               children: [
                 Expanded(
@@ -253,9 +270,16 @@ class _TransactionFormState extends State<TransactionForm> {
                     _selectedDate == null
                         ? 'กรุณาเลือกวันที่'
                         : 'วันที่: ${_selectedDate!.toIso8601String().substring(0, 10)}',
+                    style: TextStyle(
+                      color: _selectedDate != null ? Color.fromARGB(255, 61, 61, 61) : Colors.black87,
+                    ),
                   ),
                 ),
+                const SizedBox(width: 8),
                 TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Color(0xFF4CAF50),
+                  ),
                   onPressed: _pickDate,
                   child: const Text('เลือกวันที่'),
                 ),
@@ -266,18 +290,24 @@ class _TransactionFormState extends State<TransactionForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF4CAF50),
+                  ),
                   onPressed: () {
                     widget.transaction != null
                         ? _submitUpdateForm()
                         : _submitCreateForm();
-                  }, //_submitForm,
-                  child: const Text('บันทึกข้อมูล'),
+                  },
+                  child: const Text('บันทึกข้อมูลล'),
                 ),
                 widget.transaction != null
                     ? const SizedBox(width: 16)
                     : Container(),
                 widget.transaction != null
                     ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFF9800),
+                        ),
                         onPressed: () {
                           _submitDeleteForm();
                         },

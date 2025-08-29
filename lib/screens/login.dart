@@ -185,6 +185,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: 2,
                             ),
                           ),
+                          floatingLabelStyle: const TextStyle(
+                            color: Color(0xFF4CAF50),
+                            fontWeight: FontWeight.w600,
+                          ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
@@ -269,6 +273,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: 2,
                             ),
                           ),
+                          floatingLabelStyle: const TextStyle(
+                            color: Color(0xFF4CAF50),
+                            fontWeight: FontWeight.w600,
+                          ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
@@ -306,13 +314,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
+                        style:
+                            ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ).copyWith(
+                              overlayColor: MaterialStateProperty.all(
+                                Colors.transparent,
+                              ), // ปิดสีฟ้า
+                              surfaceTintColor: MaterialStateProperty.all(
+                                Colors.transparent,
+                              ), // ปิด Material3 effect
+                            ),
                         onPressed: _isLoading ? null : _handleLogin,
                         child: _isLoading
                             ? const SizedBox(

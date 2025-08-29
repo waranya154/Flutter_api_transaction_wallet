@@ -42,7 +42,7 @@ class UserProfileCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue[700],
+                        color: Color(0xFFFF9800),
                       ),
                     ),
                   ),
