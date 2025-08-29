@@ -306,3 +306,27 @@ class StorageService {
 - 💰 DropDown เลือกประเภท รายรับ/รายจ่าย
 - 🔄 Modal Bottom Sheet Design
 
+## 🧪 การทดสอบและควบคุมคุณภาพ
+
+### 🔍 คำสั่งทดสอบ
+
+```bash
+# 🧪 รันการทดสอบทั้งหมด
+flutter test
+
+# 📋 ตรวจสอบ Code Quality และ Linting
+flutter analyze
+
+# 🏗️ ทดสอบการ Build
+flutter build apk --debug
+
+# 📊 ตรวจสอบ Dependencies
+flutter pub deps
+```
+
+### 🎯 Test Coverage
+
+- ✅ **Unit Tests** - Logic และ Business Rules
+- ✅ **Widget Tests** - UI Components
+- ⚠️ **Integration Tests** - End-to-End Testing (ขณะพัฒนา)
+
