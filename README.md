@@ -330,3 +330,69 @@ flutter pub deps
 - ✅ **Widget Tests** - UI Components
 - ⚠️ **Integration Tests** - End-to-End Testing (ขณะพัฒนา)
 
+## 📱 รองรับแพลตฟอร์ม
+
+<div align="center">
+
+| Platform       | Status          | Notes                   |
+| -------------- | --------------- | ----------------------- |
+| 🤖 **Android** | ✅ Full Support | API Level 21+           |
+| 🍎 **iOS**     | ✅ Full Support | iOS 12.0+               |
+| 🌐 **Web**     | ⚠️ Limited      | ไม่รองรับ Local Storage |
+| 💻 **Desktop** | ⚠️ Limited      | Windows/macOS/Linux     |
+
+## 🔒 ฟีเจอร์ด้านความปลอดภัย
+
+- 🔐 **JWT Token Authentication** - ระบบยืนยันตัวตนที่ปลอดภัย
+- 🗄️ **Secure Local Storage** - จัดเก็บข้อมูลด้วย Hive Encryption
+- ✅ **Input Validation** - ตรวจสอบข้อมูลนำเข้าทุกฟิลด์
+- ⚠️ **Error Handling** - จัดการข้อผิดพลาดอย่างเหมาะสม
+- ⏰ **Auto-logout** - ออกจากระบบอัตโนมัติเมื่อ Token หมดอายุ
+- 🛡️ **API Security** - ส่งข้อมูลผ่าน HTTPS เท่านั้น
+
+## 🤝 แนวทางการพัฒนาต่อ
+
+### 📋 Code Style Guidelines
+
+```dart
+// ✅ ใช้ Flutter/Dart conventions
+class TransactionController extends GetxController {
+  // ✅ Comments เป็นภาษาไทย (อธิบายโค้ด)
+  // ✅ ชื่อตัวแปรและฟังก์ชันเป็นภาษาอังกฤษ
+
+  final RxList<TransactionData> transactions = <TransactionData>[].obs;
+
+  // เพิ่มรายการธุรกรรมใหม่
+  void addTransaction(TransactionData transaction) {
+    transactions.add(transaction);
+  }
+}
+```
+
+### 🔄 Git Workflow
+
+```bash
+# 📝 Commit Message Conventions
+git commit -m "feat: add transaction CRUD functionality"
+git commit -m "fix: handle API timeout error"
+git commit -m "style: update transaction card UI"
+git commit -m "refactor: improve auth controller structure"
+git commit -m "docs: update README with API documentation"
+```
+
+### 🎯 Development Roadmap
+
+- [ ] 📊 **Analytics Dashboard** - สถิติรายรับ-รายจ่าย
+- [ ] 📁 **Category Management** - จัดหมวดหมู่รายการ
+- [ ] 📤 **Export/Import** - ส่งออกข้อมูล CSV/PDF
+- [ ] 🌙 **Dark Mode** - โหมดธีมมืด
+- [ ] 🔔 **Push Notifications** - แจ้งเตือนรายการ
+- [ ] 📈 **Charts & Reports** - กราฟและรายงาน
+
+---
+
+## ⭐ ตัวอย่างหน้าจอผู้ใช้งาน (User Interface)
+
+![หน้าจอแอป](./assets/images/ToDo-UI.png)
+
+> 💸 **ตังค์จ๋า พี่มาแล้วจ้า แอปพลิเคชันดีๆ มีให้คุณได้ใช้**
